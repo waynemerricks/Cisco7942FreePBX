@@ -76,7 +76,7 @@ The bare minimum to get this to happen are (be careful, file names are case sens
   * XMLDefault.cnf.xml
   * SEP**PUT MAC ADDRESS OF PHONE HERE**.cnf.xml
 
-#### [XMLDefault.cnf.xml](../master/tftpboot/XMLDefault.cnf.xml) - Main System Config
+### [XMLDefault.cnf.xml](../master/tftpboot/XMLDefault.cnf.xml) - Main System Config
 
 You only need to change one line in this file for the 7942:
 
@@ -90,7 +90,7 @@ The SIP42.9-4-2SR3-1S is taken directly from the SIP42 loads file name.  If you 
 
 In theory you can also set the directory and services URL for all phones in this config file however be aware that not all phones support the same set of Cisco XML elements so if you're mixing models you might want to keep this config to each specific phone.
 
-#### [SEPMACADDRESS.cnf.xml](../master/tftpboot/SEPMACADDRESS.cnf.xml) - Phone Specific Config
+### [SEPMACADDRESS.cnf.xml](../master/tftpboot/SEPMACADDRESS.cnf.xml) - Phone Specific Config
 
 This is where the bulk of the phone settings live.  You must rename this file to match the MAC address of the phone you're configuring.  You can find this from the sticker on the back of the phone or via Settings --> Model Information --> MAC Address.  For example my nearest phone has a MAC of 00270DBD73DD so I would rename the file SEP00270DBD73DD.cnf.xml.
 
@@ -255,3 +255,86 @@ You also need to provide a thumbnail for each image that the phone will use in t
 As you can see this is fairly simple too, you may be able to substitute (untested) the TFTP URL with a standard HTTP url if you have images elsewhere (or as part of the FreePBX webserver).  For sanity reasons, I'm keeping the graphic files with the xml file.
 
 The Image="" section is for the thumbnail, the URL is the location of the full image.
+
+## Phonebook Integration with FreePBX
+
+A lot of the code for phonebook integration also applies if you want to make your own custom services.  The phone can call and interact with a standard webserver as long as it outputs either flat text or Cisco Specific XML (to control input and softkeys).  The main limitation is that the phone can only display certain amounts of elements before dying so pay close attention to the [Cisco reference material](https://www.cisco.com/c/en/us/td/docs/voice_ip_comm/cuipph/all_models/xsi/8_5_1/xsi_dev_guide/supporteduris.html#wpxref24086) if you're going this route.
+
+The first thing you'll want to do is add a simple XML file that will display under your missed, received and placed calls.  This is the part that none of the guides seem to mention and they jump straight to the CiscoIPPhoneDirectory section which leaves you looking at a directory screen with none of your changes.
+
+All of the addressbook integration has to sit on a web server and not the TFTP server.  FreePBX has one built in with PHP.  The only thing to watch is that FreePBX is set up such that if there is an error it will display a formatted error message and a section of PHP code where it broke.  This means any passwords etc in files could be publicly visible!
+
+### [directory.xml](../master/www/directory.xml) - Phonebook entry point
+
+```xml
+<CiscoIPPhoneMenu>
+  <Title>Title of menu</Title>
+  <Prompt>Select address book</Prompt>
+
+  <MenuItem>
+    <Name>Name of the Phonebook</Name>
+    <URL>http://IP ADDRESS OF FREEPBX/searchAddressBook.xml</URL>
+  </MenuItem>
+
+</CiscoIPPhoneMenu>
+```
+
+As you can see, short and sweet.  You can change the title and prompt that the phone menu displays.  Also change the name as appropriate e.g. My Company.PLC 
+
+When selected this calls searchAddressBook.xml
+
+### [searchAddressBook.xml](../master/www/searchAddressBook.xml) - The search screen
+
+This file mimics the standard Cisco CUCM directory search screen.  I did experiment with a flat list of extensions but it is very painful to scroll through more than half a dozen entries, let alone 32 per page, especially if you have a lot of extensions.
+
+```xml
+<CiscoIPPhoneInput>
+
+  <Title>Search for Person</Title>
+  <Prompt>Enter search criteria</Prompt>
+  <URL>http://IP ADDRESS OF FREEPBX/addressbook.php</URL>
+
+  <InputItem>
+    <DisplayName>Name</DisplayName>
+    <QueryStringParam>name</QueryStringParam>
+    <DefaultValue></DefaultValue>
+    <InputFlags>A</InputFlags>
+  </InputItem>
+
+  <InputItem>
+    <DisplayName>Number</DisplayName>
+    <QueryStringParam>fname</QueryStringParam>
+    <DefaultValue></DefaultValue>
+    <InputFlags>T</InputFlags>
+  </InputItem>
+
+  <SoftKeyItem>
+    <Name>Search</Name>
+    <URL>SoftKey:Submit</URL>
+    <Position>1</Position>
+  </SoftKeyItem>
+
+  <SoftKeyItem>
+    <Name>Exit</Name>
+    <URL>SoftKey:Exit</URL>
+    <Position>2</Position>
+  </SoftKeyItem>
+
+  <SoftKeyItem>
+    <Name>Del</Name>
+    <URL>SoftKey:&lt;&lt;</URL>
+    <Position>3</Position>
+  </SoftKeyItem>
+
+</CiscoIPPhoneInput>
+```
+
+There is quite a bit to unpack here and there is far more information available directly from Cisco.  First of all we have a title and user prompt.  Then the URL is the important PHP file that queries the FreePBX database.
+
+After that we're just putting stuff on the screen.  The first input item is for searching by name, the input flag of A means accept A-Z and numbers.  The QueryStringParam is what will be appended to a standard URL e.g. search.php?name=Wayne, QueryStringParam in this case being the "name" bit.
+
+If you note, I chose note to search by first and last name for two reasons.  One is it's easier to search the whole name and two, Asterisk only stores the whole name so it would be a little more programming to split the name back to fname, lname.
+
+Next up we're assigning what should go onto the 4 soft keys the 7942’s have for this screen.  Submit starts the search, Exit quits and &lt;&lt; translates to << which is how the Cisco phones denote delete a character.  Again there are more soft key templates available check out the references.
+
+### [addressbook.php](../master/www/addressbook.php) - The actual FreePBX integration
