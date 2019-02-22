@@ -151,3 +151,27 @@ To factory reset the 7942s:
 This takes a few minutes to install, do not mess with the phone while this is happening or you'll potentially brick the phone.
 
 At this point if your XML settings are correct the phone will be usable but there are a few extras that can make life easier.
+
+## [dialplan.xml](../master/tftpboot/dialplan.xml) AKA making the phone respond without waiting to dial
+
+By now you may have noticed a dialplan.xml referenced in the phone config and possible error messages relating to dialplans.  This file defines how the phone behaves when you enter certain numbers.
+
+You need to put this file in the root of your tftpboot directory.  The sample file is UK specific however you basically set up templates where you want different behaviours.  
+
+For example what if you want the 999 emergency number to dial instantly with no delay:
+`<TEMPLATE MATCH="999" Timeout="0"/>`
+
+You can adjust time outs based on patterns that you use in short:
+  * Use specific numbers for matches e.g. 9 matches 9
+  * Use dots to signify any number, e.g. .... = any 4 numbers matches
+  * Use * for any amounts of numbers (standard wildcard)
+  * Use \* to escape * for use with Asterisk feature codes
+
+So if you want to match any number that starts with 3, has 2 numbers then a number 4 and then after that you don't care what happens you would match it like this:
+`<TEMPLATE MATCH="3..4*" Timeout="0"/>`
+
+Why you would want to do this is debatable but now you know.
+
+**Note:**  This does not change any dialplans you have set up with FreePBX, this is purely changing how the phone responds before talking to FreePBX.
+
+##
