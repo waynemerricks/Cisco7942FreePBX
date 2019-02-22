@@ -76,7 +76,7 @@ The bare minimum to get this to happen are (be careful, file names are case sens
   * XMLDefault.cnf.xml
   * SEP**PUT MAC ADDRESS OF PHONE HERE**.cnf.xml
 
-#### [XMLDefault.cnf.xml](../master/tftpboot/XMLDefault.cnf.xml)
+#### [XMLDefault.cnf.xml](../master/tftpboot/XMLDefault.cnf.xml) - Main System Config
 
 You only need to change one line in this file for the 7942:
 
@@ -90,7 +90,7 @@ The SIP42.9-4-2SR3-1S is taken directly from the SIP42 loads file name.  If you 
 
 In theory you can also set the directory and services URL for all phones in this config file however be aware that not all phones support the same set of Cisco XML elements so if you're mixing models you might want to keep this config to each specific phone.
 
-#### [SEPMACADDRESS.cnf.xml](../master/tftpboot/SEPMACADDRESS.cnf.xml)
+#### [SEPMACADDRESS.cnf.xml](../master/tftpboot/SEPMACADDRESS.cnf.xml) - Phone Specific Config
 
 This is where the bulk of the phone settings live.  You must rename this file to match the MAC address of the phone you're configuring.  You can find this from the sticker on the back of the phone or via Settings --> Model Information --> MAC Address.  For example my nearest phone has a MAC of 00270DBD73DD so I would rename the file SEP00270DBD73DD.cnf.xml.
 
@@ -152,7 +152,7 @@ This takes a few minutes to install, do not mess with the phone while this is ha
 
 At this point if your XML settings are correct the phone will be usable but there are a few extras that can make life easier.
 
-## [dialplan.xml](../master/tftpboot/dialplan.xml) AKA making the phone respond without waiting to dial
+## [dialplan.xml](../master/tftpboot/dialplan.xml) - Making the phone respond without waiting to dial
 
 By now you may have noticed a dialplan.xml referenced in the phone config and possible error messages relating to dialplans.  This file defines how the phone behaves when you enter certain numbers.
 
@@ -174,4 +174,84 @@ Why you would want to do this is debatable but now you know.
 
 **Note:**  This does not change any dialplans you have set up with FreePBX, this is purely changing how the phone responds before talking to FreePBX.
 
-##
+## Custom Ringtones
+
+By default you only get the Chirp 1 and 2 with the SIP firmware for the 7942s.  During a deep google dive, I managed to find some extra files hosted at a random website by a person who seems to have been mucking around with Cisco phones several years ago. 
+
+http://www.loligo.com/asterisk/cisco/79xx/current/
+
+I've added the files that work to this repo just in case the site goes away.  You can also make your own sounds but they have to be a specific format (taken from Cisco directly):
+
+https://www.cisco.com/c/en/us/td/docs/voice_ip_comm/cuipph/all_models/xsi/8_5_1/xsi_dev_guide/supporteduris.html#wpxref24086
+
+> The audio files for the rings must meet the following requirements for proper playback on Cisco Unified IP Phones:
+>
+>  * Raw PCM (no header)
+>  * 8000 samples per second
+>  * 8 bits per sample
+>  * uLaw compression
+>  * Maximum ring size—16080 samples
+>  * Minimum ring size—240 samples
+>  * Number of samples in the ring is evenly divisible by 240.
+>  * Ring starts and ends at the zero crossing.
+>
+> To create PCM files for custom phone rings, you can use any standard audio editing packages that support these file format requirements.
+
+Once you have your raw ring file you need to save it to the root of your tftpboot directory.  The 7942's sadly don't support reading rings from anything but the root.  Some TFTP servers apparently support alias commands for redirecting file requests but I couldn't get this to work with the one built in to FreePBX.
+
+With everything in place you need another xml file in the root [ringlist.xml](../master/tftpboot/ringlist.xml)
+
+The format is pretty simple, you need a ring section for each ringer file.  The display name is how it is labelled on the phone and the filename is the case sensitive TFTP file name.  The above file is setup for every raw file found on loligo.com.
+
+**Please note** I'm not sure if there is an upper limit to the amount of rings you can have in a list but the phone directory has a limit of 32 items so if you start getting errors check you added more than 32 in the ringlist file.
+
+```xml
+<CiscoIPPhoneRingList>
+    <Ring>
+        <DisplayName>Are you there Male?</DisplayName>
+        <FileName>AreYouM.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Are you there Female?</DisplayName>
+        <FileName>AreYouThereF.raw</FileName>
+    </Ring>
+</CiscoIPPhoneRingList>
+```
+
+You have to then select the ring tones you want to use via Settings -> User Preferences --> Rings:
+
+![7942 User Ringtones](https://github.com/waynemerricks/Cisco7942FreePBX/raw/master/images/7942_custom_ringtones.png "Custom Ringtones")
+
+## [List.xml](../master/tftpboot/Desktops/320x196x4/List.xml) Custom Backgrounds
+
+The phone will automatically look for an xml file containing a list of phone backgrounds you can use.  Again this is selected per phone via Settings --> User Preferences --> Background Images:
+
+![7942 User Backgrounds](https://github.com/waynemerricks/Cisco7942FreePBX/raw/master/images/7942_custom_backgrounds.png "Custom Backgrounds")
+
+This xml file must be stored in /tftpboot/Desktops/320x196x4/List.xml.  Different phones require different resolutions and locations for this file.  The 7942s specifically can only display the following:
+  * 320px width
+  * 196px height
+  * 4 "Colours" (grey scale ish)
+
+The guides all say you must use grey scale mode and bmp files but the 7942s can interpret standard Colour PNG files.  Just be careful with the colours you use, although you can copy/paste your company logo the phone will match the colours based on the following simple 4 colour pallette:
+  * Black
+  * Dark Grey
+  * Light Grey
+  * Screen Colour (white/no colour at all)
+
+In short stick with simple logos, don't try for the Mona Lisa without some serious monochrome pixel art optimisations.  Also take care because all of the phone labels are drawn on top of this logo without any consideration (text basically disappears if your logo is black).
+
+You also need to provide a thumbnail for each image that the phone will use in the background selection menu.  The same limitations apply but now the size is limited to 80 x 49 pixels.
+
+```xml
+<CiscoIPPhoneImageList>
+    <ImageItem Image="TFTP:Desktops/320x196x4/ubuntu-tn.png"
+       URL="TFTP:Desktops/320x196x4/ubuntu.png"/>
+    <ImageItem Image="TFTP:Desktops/320x196x4/tux-tn.png"
+       URL="TFTP:Desktops/320x196x4/tux.png"/>
+</CiscoIPPhoneImageList>
+```
+
+As you can see this is fairly simple too, you may be able to substitute (untested) the TFTP URL with a standard HTTP url if you have images elsewhere (or as part of the FreePBX webserver).  For sanity reasons, I'm keeping the graphic files with the xml file.
+
+The Image="" section is for the thumbnail, the URL is the location of the full image.
