@@ -75,7 +75,7 @@ The bare minimum to get this to happen are (be careful, file names are case sens
   * XMLDefault.cnf.xml
   * SEP**PUT MAC ADDRESS OF PHONE HERE**.cnf.xml
 
-#### [XMLDefault.cnf.xml](../blob/master/tftpboot/XMLDefault.cnf.xml)
+#### [XMLDefault.cnf.xml](../master/tftpboot/XMLDefault.cnf.xml)
 
 You only need to change one line in this file for the 7942:
 
@@ -89,7 +89,7 @@ The SIP42.9-4-2SR3-1S is taken directly from the SIP42 loads file name.  If you 
 
 In theory you can also set the directory and services URL for all phones in this config file however be aware that not all phones support the same set of Cisco XML elements so if you're mixing models you might want to keep this config to each specific phone.
 
-#### [SEPMACADDRESS.cnf.xml](../blob/master/tftpboot/SEPMACADDRESS.cnf.xml)
+#### [SEPMACADDRESS.cnf.xml](../master/tftpboot/SEPMACADDRESS.cnf.xml)
 
 This is where the bulk of the phone settings live.  You must rename this file to match the MAC address of the phone you're configuring.  You can find this from the sticker on the back of the phone or via Settings --> Model Information --> MAC Address.  For example my nearest phone has a MAC of 00270DBD73DD so I would rename the file SEP00270DBD73DD.cnf.xml.
 
