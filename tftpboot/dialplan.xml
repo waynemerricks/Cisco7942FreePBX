@@ -1,0 +1,16 @@
+<DIALTEMPLATE>
+    <TEMPLATE MATCH="999" Timeout="0"/> <!-- Emergency -->
+    <TEMPLATE MATCH="112" Timeout="0"/> <!-- Emergency -->
+    <TEMPLATE MATCH="0500......" Timeout="0"/> <!-- Apparently 0500 is always 10 digits -->
+    <TEMPLATE MATCH="0800......" Timeout="0"/> <!-- Apparently 0800 is always 10 digits -->
+    <TEMPLATE MATCH="00*" Timeout="5"/> <!-- International, 00 prefixed. No fixed length -->
+    <TEMPLATE MATCH="0.........." Timeout="0"/> <!-- UK 11 digit, 0 prefixed -->
+    <TEMPLATE MATCH="26...." Timeout="0"/> <!-- My local STD numbers start 26 -->
+    <TEMPLATE MATCH="\*.." Timeout="0"/> <!-- Asterisk *.. codes -->
+    <TEMPLATE MATCH="\*98...." Timeout="0"/> <!-- Asterisk direct VM access *981234-->
+    <TEMPLATE MATCH="1..." Timeout="0"/> <!-- Internal numbers -->
+    <TEMPLATE MATCH="2..." Timeout="0"/>  <!-- Internal numbers -->
+    <TEMPLATE MATCH="3..." Timeout="0"/>  <!-- Internal numbers -->
+    <TEMPLATE MATCH="4..." Timeout="0"/>  <!-- Internal numbers -->
+    <TEMPLATE MATCH="*" Timeout="5"/> <!-- Anything else -->
+</DIALTEMPLATE>
