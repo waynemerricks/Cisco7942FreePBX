@@ -41,6 +41,7 @@ For whatever reason, PJSIP does not work with these phones.  Using CHAN_SIP defa
 ![FreePBX CHAN_SIP Driver](https://github.com/waynemerricks/Cisco7942FreePBX/raw/master/images/pbx_chan_sip.png "Set CHAN_SIP Driver")
 
 **Set Port to 5160**
+
 ![CHAN_SIP Port 5160](https://github.com/waynemerricks/Cisco7942FreePBX/raw/master/images/pbx_port_5160.png "Set Port to 5160")
 
 ## Getting the firmware
