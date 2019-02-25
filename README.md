@@ -395,14 +395,23 @@ Double check you have set the extension you're using with the phone to CHAN_SIP 
 Apologies for the poor documentation but here are most of the pages used to collate all of this information:
   
 https://blog.kmp.or.at/cisco-ip-phone-7942-w-asterisk/
+
 https://www.cisco.com/c/en/us/td/docs/voice_ip_comm/cuipph/all_models/xsi/8_5_1/xsi_dev_guide/supporteduris.html#wpxref24086
+
 https://www.cisco.com/c/en/us/td/docs/voice_ip_comm/cuipph/all_models/xsi/6_0/english/programming/guide/XSIbook/xsi60obj.html#wp1033491
+
 https://www.petenetlive.com/KB/Article/0000998
+
 https://www.voip-info.org/asterisk-cisco-79xx-xml-services
+
 https://www.whizzy.org/2017/02/cisco-7941-asterisk-and-sip/
+
 https://www.voip-info.org/asterisk-phone-cisco-79xx/
+
 https://www.voip-info.org/cisco-7942-with-local-pbx/
+
 http://www.runpcrun.com/rebootciscophone Settings -> `**#**` then wait
 
 https://github.com/chan-sccp/chan-sccp/wiki/Cisco-phone-configuration-files-SEPXXXXXXXXX.cnf.xml --> Not all relevant to SIP but some good explanations for overlap
+
 http://www.loligo.com/asterisk/cisco/79xx/
