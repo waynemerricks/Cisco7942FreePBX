@@ -402,6 +402,6 @@ https://www.voip-info.org/asterisk-cisco-79xx-xml-services
 https://www.whizzy.org/2017/02/cisco-7941-asterisk-and-sip/
 https://www.voip-info.org/asterisk-phone-cisco-79xx/
 https://www.voip-info.org/cisco-7942-with-local-pbx/
-http://www.runpcrun.com/rebootciscophone Settings -> **#** then wait
+http://www.runpcrun.com/rebootciscophone Settings -> `**#**` then wait
 https://github.com/chan-sccp/chan-sccp/wiki/Cisco-phone-configuration-files-SEPXXXXXXXXX.cnf.xml --> Not all relevant to SIP but some good explanations for overlap
 http://www.loligo.com/asterisk/cisco/79xx/
