@@ -1,0 +1,118 @@
+<CiscoIPPhoneRingList>
+    <Ring>
+        <DisplayName>Are you there Male?</DisplayName>
+        <FileName>AreYouM.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Are you there Female?</DisplayName>
+        <FileName>AreYouThereF.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Asleep</DisplayName>
+        <FileName>ringtones/asleep.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Caramba</DisplayName>
+        <FileName>caramba.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Clock</DisplayName>
+        <FileName>Clock.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>CTU 24</DisplayName>
+        <FileName>CTU24raw.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Curley</DisplayName>
+        <FileName>Curley.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Dilbert Incoming</DisplayName>
+        <FileName>dilbertBoss.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Dilbert Meetings</DisplayName>
+        <FileName>dilbertPHB.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Drums 1</DisplayName>
+        <FileName>Drums1.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Drums 2</DisplayName>
+        <FileName>Drums2.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Film Score</DisplayName>
+        <FileName>FilmScore.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Flint Phone</DisplayName>
+        <FileName>FlintPhone.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Harp</DisplayName>
+        <FileName>HarpSynth.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Hello</DisplayName>
+        <FileName>3s-hello.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Jamaica</DisplayName>
+        <FileName>Jamaica.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Klaxons</DisplayName>
+        <FileName>Klaxons.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Koto Effect</DisplayName>
+        <FileName>KotoEffect.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>May I help you?</DisplayName>
+        <FileName>mayihelp.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Music Box</DisplayName>
+        <FileName>MusicBox.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Neuro</DisplayName>
+        <FileName>Neuro.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Nyuk Nyuk</DisplayName>
+        <FileName>NyukNyuk.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Oh no...</DisplayName>
+        <FileName>Ohno.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Piano 1</DisplayName>
+        <FileName>Piano1.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Piano 2</DisplayName>
+        <FileName>Piano2.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Pop</DisplayName>
+        <FileName>Pop.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Pulse</DisplayName>
+        <FileName>Pulse1.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Sax 1</DisplayName>
+        <FileName>Sax1.raw</FileName>
+    </Ring>
+    <Ring>
+        <DisplayName>Sax 2</DisplayName>
+        <FileName>Sax2.raw</FileName>
+    </Ring>
+</CiscoIPPhoneRingList>
