@@ -1,0 +1,10 @@
+<CiscoIPPhoneMenu>
+  <Title>Directory Title</Title>
+  <Prompt>Select address book</Prompt>
+  
+  <MenuItem>
+    <Name>Address book Title</Name>
+    <URL>http://IP ADDRESS OF FREEPBX/searchAddressBook.xml</URL>
+  </MenuItem>
+
+</CiscoIPPhoneMenu>

@@ -1,0 +1,39 @@
+<CiscoIPPhoneInput>
+
+  <Title>Search for Person</Title>
+  <Prompt>Enter search criteria</Prompt>
+  <URL>http://IP ADDRESS OF FREEPBX/addressbook.php</URL>
+
+  <InputItem>
+    <DisplayName>Name</DisplayName>
+    <QueryStringParam>name</QueryStringParam>
+    <DefaultValue></DefaultValue>
+    <InputFlags>A</InputFlags>
+  </InputItem>
+
+  <InputItem>
+    <DisplayName>Number</DisplayName>
+    <QueryStringParam>fname</QueryStringParam>
+    <DefaultValue></DefaultValue>
+    <InputFlags>T</InputFlags>
+  </InputItem>
+  
+  <SoftKeyItem>
+    <Name>Search</Name>
+    <URL>SoftKey:Submit</URL>
+    <Position>1</Position>
+  </SoftKeyItem>
+
+  <SoftKeyItem>
+    <Name>Exit</Name>
+    <URL>SoftKey:Exit</URL>
+    <Position>2</Position>
+  </SoftKeyItem>
+
+  <SoftKeyItem>
+    <Name>Del</Name>
+    <URL>SoftKey:&lt;&lt;</URL>
+    <Position>3</Position>
+  </SoftKeyItem>
+
+</CiscoIPPhoneInput>
