@@ -226,7 +226,7 @@ You have to then select the ring tones you want to use via Settings -> User Pref
 
 The phone will automatically look for an xml file containing a list of phone backgrounds you can use.  Again this is selected per phone via Settings --> User Preferences --> Background Images:
 
-![7942 User Backgrounds](https://github.com/waynemerricks/Cisco7942FreePBX/raw/master/images/7942_custom_backgrounds.png "Custom Backgrounds")
+![7942 User Backgrounds](https://github.com/waynemerricks/Cisco7942FreePBX/raw/master/images/7942_custom_background2.png "Custom Backgrounds")
 
 This xml file must be stored in /tftpboot/Desktops/320x196x4/List.xml.  Different phones require different resolutions and locations for this file.  The 7942s specifically can only display the following:
   * 320px width
