@@ -303,7 +303,7 @@ This file mimics the standard Cisco CUCM directory search screen.  I did experim
 
   <InputItem>
     <DisplayName>Number</DisplayName>
-    <QueryStringParam>fname</QueryStringParam>
+    <QueryStringParam>num</QueryStringParam>
     <DefaultValue></DefaultValue>
     <InputFlags>T</InputFlags>
   </InputItem>
@@ -333,8 +333,8 @@ There is quite a bit to unpack here and there is far more information available 
 
 After that we're just putting stuff on the screen.  The first input item is for searching by name, the input flag of A means accept A-Z and numbers.  The QueryStringParam is what will be appended to a standard URL e.g. search.php?name=Wayne, QueryStringParam in this case being the "name" bit.
 
-If you note, I chose note to search by first and last name for two reasons.  One is it's easier to search the whole name and two, Asterisk only stores the whole name so it would be a little more programming to split the name back to fname, lname.
+If you note, I chose not to search by first and last name separately for two reasons.  One is it's easier to search the whole name and two, FreePBX only stores the whole name so it would be a little more programming to split the name back to fname, lname.
 
-Next up we're assigning what should go onto the 4 soft keys the 7942’s have for this screen.  Submit starts the search, Exit quits and &lt;&lt; translates to << which is how the Cisco phones denote delete a character.  Again there are more soft key templates available check out the references.
+Next up we're assigning what should go onto the 4 soft keys the 7942’s have for this screen.  Submit starts the search, Exit quits and `&lt;&lt;` translates to << which is how the Cisco phones denote delete a character.  Again there are more soft key templates available check out the references.
 
 ### [addressbook.php](../master/www/addressbook.php) - The actual FreePBX integration
