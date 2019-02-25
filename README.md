@@ -338,3 +338,70 @@ If you note, I chose not to search by first and last name separately for two rea
 Next up we're assigning what should go onto the 4 soft keys the 7942’s have for this screen.  Submit starts the search, Exit quits and `&lt;&lt;` translates to << which is how the Cisco phones denote delete a character.  Again there are more soft key templates available check out the references.
 
 ### [addressbook.php](../master/www/addressbook.php) - The actual FreePBX integration
+
+**WARNING:** FreePBX runs with PHP errors on by default.  If you're mucking around with the code and/or something breaks you can expose code snippets to the public.  Look into turning PHP errors off if this is a concern.
+
+This file is effectively standard PHP MySQL searches and then spitting out the output in an XML format the Cisco IP Phones understand.  There are a few complications:
+  * We read the /etc/freepbx.conf to get MySQL access details rather than just including it as part of our PHP because it seems wasteful to drag in parts of the FreePBX core to get a few variable values
+  * We must limit results to a maximum of 32 per page to avoid the limitations of the 7942s
+  
+At the moment there is only one part of the pagination code I don't like, every time you page forward through a set of results a new menu screen is opened due to the way the phones work.  If you then quit out, you have to exit for every page of results you opened.
+
+## Troubleshooting 7942s
+
+### SSH Access
+
+When using SSH to access the phones, the initial login is that which you set in the SEP*.cnf.xml.  Once you login you're immediately greeted with another login screen.  This is the Cisco shell login access, there are a few users you can use:
+
+  * log/log - Display system logs
+  * debug/debug - Special debugging access
+  * default/user - Basic non-root shell
+  
+You can get a list of commands via `help commands`, the main two you're likely to be interested in if things are failing are:
+
+  * show register -> Show registration status of the SIP lines
+  * show strace -> full debug log, you can expand/shrink the amount of text here via the various debug commands
+
+### TFTP Debugging
+
+TFTP will log to the standard syslog in FreePBX (/var/log/syslog) but you may have to increase the verbosity for it to show useful information.
+
+Inside /etc/xinetd.d/tftp make sure server_args has --verbose appended to it.
+
+Once that is done you should start seeing logs as follows:
+
+````
+Feb 22 09:58:24 freepbx in.tftpd[25625]: RRQ from 10.6.4.12 filename CTLSEP12ABC345678D.tlv
+Feb 22 09:58:24 freepbx in.tftpd[25625]: Client 10.6.4.12 File not found CTLSEP12ABC345678D.tlv
+Feb 22 09:58:24 freepbx in.tftpd[25626]: RRQ from 10.6.4.12 filename ITLSEP12ABC345678D.tlv
+Feb 22 09:58:24 freepbx in.tftpd[25626]: Client 10.6.4.12 File not found ITLSEP12ABC345678D.tlv
+Feb 22 09:58:25 freepbx in.tftpd[25627]: RRQ from 10.6.4.12 filename ITLFile.tlv
+Feb 22 09:58:25 freepbx in.tftpd[25627]: Client 10.6.4.12 File not found ITLFile.tlv
+Feb 22 09:58:25 freepbx in.tftpd[25628]: RRQ from 10.6.4.12 filename SEP12ABC345678D.cnf.xml
+Feb 22 09:58:25 freepbx in.tftpd[25628]: Client 10.6.4.12 finished SEP12ABC345678D.cnf.xml
+Feb 22 09:58:29 freepbx in.tftpd[25629]: RRQ from 10.6.4.12 filename /mk-sip.jar
+Feb 22 09:58:29 freepbx in.tftpd[25629]: Client 10.6.4.12 File not found /mk-sip.jar
+Feb 22 09:58:34 freepbx in.tftpd[25631]: RRQ from 10.6.4.12 filename dialplan.xml
+Feb 22 09:58:34 freepbx in.tftpd[25631]: Client 10.6.4.12 finished dialplan.xml
+````
+This is from a working phone.  As you can see there are some missing tlv files and mk-sip.jar.  These relate to the trust list and the locale respectively.  If anyone manages to find these please let me know, it appears that you need to have a paid Cisco contract in order to get access to the locale files however I'm not sure at all about the tlv's.
+
+#### Stuck Registering
+
+Double check you have set the extension you're using with the phone to CHAN_SIP and amended the port to 5160.  Also make sure that 5160 is listed in the SEP*.cnf.xml file for the phone.
+  
+## References
+  
+Apologies for the poor documentation but here are most of the pages used to collate all of this information:
+  
+https://blog.kmp.or.at/cisco-ip-phone-7942-w-asterisk/
+https://www.cisco.com/c/en/us/td/docs/voice_ip_comm/cuipph/all_models/xsi/8_5_1/xsi_dev_guide/supporteduris.html#wpxref24086
+https://www.cisco.com/c/en/us/td/docs/voice_ip_comm/cuipph/all_models/xsi/6_0/english/programming/guide/XSIbook/xsi60obj.html#wp1033491
+https://www.petenetlive.com/KB/Article/0000998
+https://www.voip-info.org/asterisk-cisco-79xx-xml-services
+https://www.whizzy.org/2017/02/cisco-7941-asterisk-and-sip/
+https://www.voip-info.org/asterisk-phone-cisco-79xx/
+https://www.voip-info.org/cisco-7942-with-local-pbx/
+http://www.runpcrun.com/rebootciscophone Settings -> **#** then wait
+https://github.com/chan-sccp/chan-sccp/wiki/Cisco-phone-configuration-files-SEPXXXXXXXXX.cnf.xml --> Not all relevant to SIP but some good explanations for overlap
+http://www.loligo.com/asterisk/cisco/79xx/
